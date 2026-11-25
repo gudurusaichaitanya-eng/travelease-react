@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Ticket Booking Platform – Innovator Pitch 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d2a;
+      --bg-card-dark: #121844;
+      --bg-light: #f8fafc;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --primary-indigo: #4338ca;
+      --bright-indigo: #4f46e5;
+      --neon-cyan: #06b6d4;
+      --neon-blue: #38bdf8;
+      --accent-purple: #7c3aed;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --border-light: #e2e8f0;
+      --card-white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #020617;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Top Floating Controls */
+    .controls-bar {
+      position: fixed;
+      top: 16px;
+      z-index: 999;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #fff;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .controls-bar button {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .controls-bar button:hover {
+      background: var(--bright-indigo);
+      border-color: var(--bright-indigo);
+    }
+
+    .slide-counter {
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Space Grotesk', monospace;
+      color: var(--neon-cyan);
+    }
+
+    /* Slide Deck Container (16:9 Aspect Ratio) */
+    .deck-container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 60px auto 30px;
+      position: relative;
+    }
+
+    .slide {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-light);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      display: none;
+      position: relative;
+      padding: 44px 56px;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================
+       SLIDE 1: HERO TITLE SLIDE (Dark Neon)
+       ========================================== */
+    .slide-hero {
+      background: radial-gradient(circle at 80% 20%, #1e1b4b 0%, #090d2a 60%, #050716 100%);
+      color: #ffffff;
+      justify-content: space-between;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: 800;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--neon-cyan), #3b82f6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .hero-body {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
+      margin: auto 0;
+    }
+
+    .pitch-tag {
+      display: inline-block;
+      background: #0369a1;
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .hero-title {
+      font-size: 48px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+      background: linear-gradient(to right, #ffffff, #c7d2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 19px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    /* 3D Glowing Ticket Showcase */
+    .hero-visual-card {
+      background: rgba(18, 24, 68, 0.7);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+      box-shadow: 0 0 50px -10px rgba(56, 189, 248, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .glowing-ticket {
+      width: 100%;
+      height: 170px;
+      background: linear-gradient(135deg, #1e1b4b, #2e1065);
+      border: 2px solid #818cf8;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 30px rgba(129, 140, 248, 0.3);
+    }
+
+    .qr-box {
+      width: 80px;
+      height: 80px;
+      background: #090d2a;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 0 15px var(--neon-cyan);
+      margin-bottom: 8px;
+    }
+
+    .qr-badge-pill {
+      background: #061b3a;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-blue);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Bottom Bar */
+    .hero-bottom-bar {
+      background: rgba(9, 13, 46, 0.9);
+      border: 1.5px solid #2563eb;
+      border-radius: 16px;
+      padding: 14px 24px;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .guide-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .guide-box .cap-icon {
+      font-size: 26px;
+      color: var(--neon-cyan);
+    }
+
+    .meta-label {
+      font-size: 11px;
+      color: var(--neon-cyan);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* ==========================================
+       STANDARD SLIDE LAYOUTS
+       ========================================== */
+    .slide-tag {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--bright-indigo);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .slide-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* Grids & Cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .grid-6 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card-white);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: #334155;
+    }
+
+    /* Table of contents grid */
+    .toc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 24px;
+    }
+
+    .toc-card {
+      background: var(--card-white);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+
+    .toc-num {
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'Space Grotesk', monospace;
+      color: var(--bright-indigo);
+      min-width: 36px;
+    }
+
+    .toc-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .toc-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Banner Strips */
+    .banner-strip {
+      margin-top: auto;
+      background: var(--primary-indigo);
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .banner-strip.dark {
+      background: #0f172a;
+      color: var(--neon-cyan);
+    }
+
+    .banner-strip.light-blue {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    /* Objective Mission Box */
+    .mission-box {
+      background: linear-gradient(135deg, #3730a3, #1e1b4b);
+      border-radius: 16px;
+      padding: 28px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .mission-tag {
+      display: inline-block;
+      background: #4f46e5;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      align-self: flex-start;
+    }
+
+    .mission-text {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    /* Architecture Tiers */
+    .arch-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .arch-tier {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .arch-tier-badge {
+      min-width: 180px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .arch-tier-items {
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* Workflow Pipeline */
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .pipeline-step {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .pipeline-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .pipeline-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .pipeline-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+
+    .pipeline-desc {
+      font-size: 10.5px;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    /* Print Formatting */
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .controls-bar {
+        display: none;
+      }
+      .deck-container {
+        margin: 0;
+        max-width: 100%;
+      }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 0;
+        height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Controls -->
+  <div class="controls-bar">
+    <button onclick="prevSlide()">◀ Prev</button>
+    <div class="slide-counter" id="counter">01 / 12</div>
+    <button onclick="nextSlide()">Next ▶</button>
+    <button onclick="toggleFullScreen()">⛶ Fullscreen</button>
+    <button onclick="window.print()">🖨️ Print / PDF</button>
+  </div>
+
+  <div class="deck-container">
+
+    <!-- ==========================================
+         SLIDE 1: TITLE & HERO
+         ========================================== -->
+    <div class="slide slide-hero active" id="slide-1">
+      <div class="hero-top">
+        <div class="brand-pill">
+          <div class="brand-icon">🎟️</div>
+          <span>SmartTicket</span>
+        </div>
+      </div>
+
+      <div class="hero-body">
+        <div>
+          <span class="pitch-tag">Innovator Pitch – 2025</span>
+          <h1 class="hero-title">Smart Ticket<br>Booking Platform</h1>
+          <p class="hero-subtitle">A unified digital ticketing solution for events, travel & venues</p>
+        </div>
+
+        <div class="hero-visual-card">
+          <div class="glowing-ticket">
+            <div class="qr-box">⛶</div>
+            <div style="font-size: 12px; font-weight: 700; color: #a5b4fc; letter-spacing: 1px;">DYNAMIC HMAC-SHA256</div>
+          </div>
+          <div class="qr-badge-pill">QR-Locked • Secure • Fast • Reliable</div>
+        </div>
+      </div>
+
+      <div class="hero-bottom-bar">
+        <div class="guide-box">
+          <div class="cap-icon">🎓</div>
+          <div>
+            <div class="meta-label">Under the guidance of</div>
+            <div class="meta-val">K Lalitha Vani Sri Madam</div>
+          </div>
+        </div>
+        <div>
+          <div class="meta-label">2500030420</div>
+          <div class="meta-val">K Hemanth Reddy</div>
+        </div>
+        <div>
+          <div class="meta-label">2500031628</div>
+          <div class="meta-val">M Jayasimha Naidu</div>
+        </div>
+        <div>
+          <div class="meta-label">2500031734</div>
+          <div class="meta-val">G Sai Chaitanya</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 2: TABLE OF CONTENTS
+         ========================================== -->
+    <div class="slide" id="slide-2">
+      <div class="slide-tag">Agenda</div>
+      <h2 class="slide-title">Table of Contents</h2>
+      <p class="slide-subtitle">What we'll walk through in this session</p>
+
+      <div class="toc-grid">
+        <div class="toc-card">
+          <div class="toc-num" style="color: #4f46e5;">01</div>
+          <div class="toc-info">
+            <h4>Abstract</h4>
+            <p>Executive summary & engineering vision</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #0284c7;">02</div>
+          <div class="toc-info">
+            <h4>Problem Statement</h4>
+            <p>Pain points in today's ticketing landscape</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #7c3aed;">03</div>
+          <div class="toc-info">
+            <h4>Project Objective</h4>
+            <p>Goals, scope & key outcomes</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #059669;">04</div>
+          <div class="toc-info">
+            <h4>System Requirements</h4>
+            <p>Functional & non-functional specifications</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #2563eb;">05</div>
+          <div class="toc-info">
+            <h4>System Architecture</h4>
+            <p>Layered, scalable multi-tier design</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #d97706;">06</div>
+          <div class="toc-info">
+            <h4>Key Features</h4>
+            <p>What the platform delivers</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #4f46e5;">07</div>
+          <div class="toc-info">
+            <h4>Technology Stack</h4>
+            <p>Modern, robust cloud-native engineering</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #0891b2;">08</div>
+          <div class="toc-info">
+            <h4>User Workflow</h4>
+            <p>Frictionless flow from search to entry</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #9333ea;">09</div>
+          <div class="toc-info">
+            <h4>Market Opportunity</h4>
+            <p>A multi-billion-dollar addressable space</p>
+          </div>
+        </div>
+        <div class="toc-card">
+          <div class="toc-num" style="color: #059669;">10</div>
+          <div class="toc-info">
+            <h4>Conclusion & Roadmap</h4>
+            <p>Summary, key takeaways & next milestones</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 3: ABSTRACT
+         ========================================== -->
+    <div class="slide" id="slide-3">
+      <div class="slide-tag">01 — Executive Summary</div>
+      <h2 class="slide-title">Abstract</h2>
+      <p class="slide-subtitle">Unified digital architecture for multi-modal ticketing, atomic concurrency & fraud prevention</p>
+
+      <div class="grid-3" style="margin-bottom: 20px;">
+        <div class="card">
+          <div class="card-header-icon" style="background: #fee2e2; color: #dc2626;">⚠️</div>
+          <h3 class="card-title">The Ticketing Dilemma</h3>
+          <p class="card-desc">
+            Traditional ticketing platforms operate in disjointed vertical silos (separate portals for transit, concerts, cinema, and attractions). Consumers suffer from fragmented bookings and duplicate friction, while organizers endure massive revenue leakage (5-10%) from black-market scalping, counterfeit tickets, and inventory sync race conditions.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #eef2ff; color: #4f46e5;">💡</div>
+          <h3 class="card-title">The SmartTicket Solution</h3>
+          <p class="card-desc">
+            SmartTicket pioneers an integrated digital ticketing hub. By implementing an API Gateway orchestrating microservices, Redis distributed atomic mutex locks, and dynamic HMAC-SHA256 encrypted QR codes, the platform guarantees zero seat double-bookings, sub-second checkout, and counterfeit-proof contactless admission.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #d1fae5; color: #059669;">🚀</div>
+          <h3 class="card-title">System Outcomes & Impact</h3>
+          <p class="card-desc">
+            Provides 100% auditable ticket lifecycles from instant multi-rail booking (UPI, Cards) to verified secondary resale and automated refunds. Delivers 99.9% uptime and sub-200ms latency to capture a share of the USD 107.7B digital ticketing economy.
+          </p>
+        </div>
+      </div>
+
+      <div class="banner-strip">
+        <div style="font-size: 11px; font-weight: 700; color: #a5b4fc; text-transform: uppercase;">KEY TAKEAWAYS</div>
+        <div style="font-size: 12.5px; font-weight: 700;">
+          Zero Double Bookings via Redis Locks &nbsp;•&nbsp; HMAC Encrypted Dynamic QR &nbsp;•&nbsp; Multi-Modal Aggregator &nbsp;•&nbsp; Instant Unified Refunds
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 4: PROBLEM STATEMENT
+         ========================================== -->
+    <div class="slide" id="slide-4">
+      <div class="slide-tag">02 — The Challenge</div>
+      <h2 class="slide-title">Problem Statement</h2>
+      <p class="slide-subtitle">Significant friction and security vulnerabilities in existing ticketing infrastructure</p>
+
+      <div class="grid-2" style="margin-bottom: 20px;">
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div class="card-header-icon" style="background: #dbeafe; color: #2563eb; margin: 0;">🎫</div>
+            <h3 class="card-title" style="margin: 0;">Fragmented Ticketing Channels</h3>
+          </div>
+          <p class="card-desc">Users juggle separate platforms for events, transit, and venues — no unified booking experience, no single wallet or itinerary.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div class="card-header-icon" style="background: #ccfbf1; color: #0d9488; margin: 0;">⏱️</div>
+            <h3 class="card-title" style="margin: 0;">Real-Time Availability Gaps</h3>
+          </div>
+          <p class="card-desc">Inventory sync delays cause double bookings and seat conflicts, especially during peak demand and flash-sale windows.</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div class="card-header-icon" style="background: #ede9fe; color: #7c3aed; margin: 0;">🛡️</div>
+            <h3 class="card-title" style="margin: 0;">Security & Fraud Concerns</h3>
+          </div>
+          <p class="card-desc">Counterfeit tickets and payment fraud erode trust and drain operator revenue every season. Estimated 5–10% of annual revenue lost (Assumption).</p>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div class="card-header-icon" style="background: #fef3c7; color: #d97706; margin: 0;">🔄</div>
+            <h3 class="card-title" style="margin: 0;">Poor Post-Purchase Experience</h3>
+          </div>
+          <p class="card-desc">No centralized resale, transfer, or refund flow — support is siloed and slow, pushing users to competitors.</p>
+        </div>
+      </div>
+
+      <div class="banner-strip">
+        <div style="font-weight: 700; font-size: 13px;">👥 Fragmented players still leave core user pain unresolved</div>
+        <div style="font-size: 11.5px; color: #c7d2fe; text-align: right;">
+          Global digital ticketing market projected to reach <strong>USD 107.7B by 2034</strong><br>
+          <span style="opacity: 0.8;">Source: Market.us, industry reports · 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 5: PROJECT OBJECTIVE
+         ========================================== -->
+    <div class="slide" id="slide-5">
+      <div class="slide-tag">03 — The Goal</div>
+      <h2 class="slide-title">Project Objective</h2>
+      <p class="slide-subtitle">Consolidating discovery, real-time inventory and fraud-safe transactions</p>
+
+      <div style="display: grid; grid-template-columns: 1.25fr 0.95fr; gap: 20px; margin-bottom: 20px;">
+        <div class="mission-box">
+          <div class="mission-tag">🎯 MISSION</div>
+          <div class="mission-text">
+            Build a smart, unified ticketing platform that consolidates discovery, booking, and post-purchase management across events, travel, and venues — with real-time inventory intelligence and fraud-safe transactions.
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card" style="padding: 14px 20px; flex-direction: row; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: var(--text-dark);">Platforms</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Events • Travel • Venues</div>
+            </div>
+            <div style="font-size: 26px; font-weight: 800; color: #2563eb; font-family: 'Space Grotesk';">1st</div>
+          </div>
+
+          <div class="card" style="padding: 14px 20px; flex-direction: row; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: var(--text-dark);">Live Sync</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Real-time inventory locks</div>
+            </div>
+            <div style="font-size: 26px; font-weight: 800; color: #059669; font-family: 'Space Grotesk';">24/7</div>
+          </div>
+
+          <div class="card" style="padding: 14px 20px; flex-direction: row; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: var(--text-dark);">Security</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Fraud-safe transactions</div>
+            </div>
+            <div style="font-size: 26px; font-weight: 800; color: #7c3aed; font-family: 'Space Grotesk';">3 in 1</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-4">
+        <div class="card" style="padding: 12px 14px; font-size: 11.5px; font-weight: 700; color: #1e293b;">
+          🎫 Consolidate ticketing via all-in-one platform
+        </div>
+        <div class="card" style="padding: 12px 14px; font-size: 11.5px; font-weight: 700; color: #1e293b;">
+          📊 Instant analytics & real-time inventory sync
+        </div>
+        <div class="card" style="padding: 12px 14px; font-size: 11.5px; font-weight: 700; color: #1e293b;">
+          🛡️ Fraud-safe & secure transactions
+        </div>
+        <div class="card" style="padding: 12px 14px; font-size: 11.5px; font-weight: 700; color: #1e293b;">
+          🔄 Centralized refund & issue workflow
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 6: SYSTEM REQUIREMENTS
+         ========================================== -->
+    <div class="slide" id="slide-6">
+      <div class="slide-tag">04 — Specifications</div>
+      <h2 class="slide-title">System Requirements</h2>
+      <p class="slide-subtitle">Functional capabilities, non-functional criteria & minimum hardware/software specifications</p>
+
+      <div class="grid-2">
+        <div class="card" style="border-left: 4px solid var(--primary-indigo);">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+            <span style="font-size: 20px;">⚙️</span>
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--primary-indigo);">Functional Requirements (FR)</h3>
+          </div>
+          <ul style="font-size: 11.5px; line-height: 1.6; color: #334155; padding-left: 18px;">
+            <li><strong>FR-1 Multi-Modal Search:</strong> Unified search across flights, trains, events & venues with live filters.</li>
+            <li><strong>FR-2 Atomic Seat Locks:</strong> 7-min temporary mutex hold via Redis to eliminate race conditions.</li>
+            <li><strong>FR-3 Encrypted Dynamic QR:</strong> HMAC-SHA256 dynamic rotating QR passes to prevent counterfeit scans.</li>
+            <li><strong>FR-4 Multi-Mode Checkout:</strong> Tokenized gateway supporting UPI QR, Cards, NetBanking with auto-receipts.</li>
+            <li><strong>FR-5 Resale & Returns:</strong> Built-in verified peer transfer, secondary ticket resale, and instant refund flow.</li>
+            <li><strong>FR-6 Admin Controls:</strong> Live inventory telemetry, gate scanning monitor, and tier pricing toggles.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-left: 4px solid var(--neon-cyan);">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+            <span style="font-size: 20px;">🛡️</span>
+            <h3 style="font-size: 16px; font-weight: 700; color: #0284c7;">Non-Functional & Technical Specs</h3>
+          </div>
+          <ul style="font-size: 11.5px; line-height: 1.6; color: #334155; padding-left: 18px; margin-bottom: 12px;">
+            <li><strong>NFR-1 Concurrency & Latency:</strong> P99 response &lt; 200ms; scales to 15,000+ simultaneous requests.</li>
+            <li><strong>NFR-2 ACID Guarantees:</strong> Zero double-booking guarantee backed by Redis atomic operations.</li>
+            <li><strong>NFR-3 Security & Privacy:</strong> TLS 1.3 in-transit, AES-256 data at rest, and JWT bearer tokens.</li>
+            <li><strong>NFR-4 Availability:</strong> 99.9% uptime target with automated failover and edge CDN caching.</li>
+          </ul>
+
+          <div style="background: #f1f5f9; border-radius: 8px; padding: 10px 14px; font-size: 10px; color: #1e293b;">
+            <strong>Environment Specs:</strong> Client: Modern Browser (Chrome/Edge/Firefox), 2GB+ RAM. Server: Node 18+, 4 vCPU, 8GB RAM, PostgreSQL 15, Redis 7.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 7: SYSTEM ARCHITECTURE
+         ========================================== -->
+    <div class="slide" id="slide-7">
+      <div class="slide-tag">05 — How It Is Built</div>
+      <h2 class="slide-title">System Architecture</h2>
+      <p class="slide-subtitle">Layered, scalable multi-tier architecture with Redis-backed atomic locking</p>
+
+      <div class="arch-stack">
+        <div class="arch-tier">
+          <div class="arch-tier-badge" style="background: #dbeafe; color: #2563eb;">📱 Client Layer</div>
+          <div class="arch-tier-items">React 18 + Vite Web App &nbsp;•&nbsp; Mobile Responsive PWA &nbsp;•&nbsp; Admin Analytics Dashboard &nbsp;•&nbsp; Gate Scanner Client</div>
+        </div>
+
+        <div class="arch-tier">
+          <div class="arch-tier-badge" style="background: #eef2ff; color: #4f46e5;">⚙️ API & Microservices</div>
+          <div class="arch-tier-items">API Gateway & Auth (JWT) &nbsp;•&nbsp; Search & Filter Service &nbsp;•&nbsp; Redis Atomic Mutex Lock &nbsp;•&nbsp; Dynamic QR Engine &nbsp;•&nbsp; Payment Webhook Listener</div>
+        </div>
+
+        <div class="arch-tier">
+          <div class="arch-tier-badge" style="background: #d1fae5; color: #059669;">🗄️ Data & Persistence</div>
+          <div class="arch-tier-items">PostgreSQL 15 (Relational Booking Data) &nbsp;•&nbsp; Redis 7 (In-Memory Key/Value Cache) &nbsp;•&nbsp; S3 Storage (PDF Passes) &nbsp;•&nbsp; Immutable Audit Ledger</div>
+        </div>
+
+        <div class="arch-tier">
+          <div class="arch-tier-badge" style="background: #ede9fe; color: #7c3aed;">🔌 External Integrations</div>
+          <div class="arch-tier-items">Payment Gateways (UPI, Cards, Wallets) &nbsp;•&nbsp; SMS/Email Dispatchers (Twilio, SendGrid) &nbsp;•&nbsp; Transit & Venue APIs &nbsp;•&nbsp; Turnstile Gate Scanners</div>
+        </div>
+      </div>
+
+      <div class="banner-strip dark">
+        <div style="font-size: 12.5px; font-weight: 700;">
+          ⚡ Architectural Guarantee: Stateless services scale horizontally behind an API Gateway; Redis atomic locks keep every seat single-owner.
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 8: KEY FEATURES
+         ========================================== -->
+    <div class="slide" id="slide-8">
+      <div class="slide-tag">06 — What The Platform Delivers</div>
+      <h2 class="slide-title">Key Features</h2>
+      <p class="slide-subtitle">Engineered to eliminate friction and empower users and venue operators</p>
+
+      <div class="grid-6">
+        <div class="card">
+          <div class="card-header-icon" style="background: #eef2ff; color: #4f46e5;">🔍</div>
+          <h3 class="card-title">Unified Discovery</h3>
+          <p class="card-desc">Search events, travel, transit, and venues from one unified interface with real-time price & category comparisons.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #e0f2fe; color: #0284c7;">🔒</div>
+          <h3 class="card-title">Atomic Seat Locks</h3>
+          <p class="card-desc">Real-time Redis inventory sync completely eliminates double booking during flash sales and peak checkouts.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #f5f3ff; color: #7c3aed;">🛡️</div>
+          <h3 class="card-title">Encrypted QR Tickets</h3>
+          <p class="card-desc">Signed, tamper-proof e-tickets with rotating dynamic HMAC codes block screenshot sharing & counterfeits.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #ecfdf5; color: #059669;">💳</div>
+          <h3 class="card-title">Secure Payments</h3>
+          <p class="card-desc">Tokenised checkout supporting UPI QR, Cards, and Wallets with automatic reconciliation and fraud screening.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #fef3c7; color: #d97706;">🔄</div>
+          <h3 class="card-title">Resale & Refunds</h3>
+          <p class="card-desc">One centralised flow for peer ticket transfer, verified secondary resale, and instant automated refund routing.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon" style="background: #ffe4e6; color: #e11d48;">🔔</div>
+          <h3 class="card-title">Smart Alerts</h3>
+          <p class="card-desc">Live event updates, transit delay notifications, boarding countdowns, and gate change alerts pushed in real-time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 9: TECHNOLOGY STACK
+         ========================================== -->
+    <div class="slide" id="slide-9">
+      <div class="slide-tag">07 — Engineering Stack</div>
+      <h2 class="slide-title">Technology Stack</h2>
+      <p class="slide-subtitle">Modern, production-grade cloud-native technologies engineered for scale</p>
+
+      <div class="grid-4">
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+            <div class="card-header-icon" style="background: #dbeafe; color: #2563eb; width: 32px; height: 32px; font-size: 16px; margin: 0;">🎨</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #2563eb;">Frontend Tier</h4>
+          </div>
+          <div style="font-size: 11.5px; line-height: 1.8; color: #334155;">
+            <strong>React 18 & Vite:</strong> Fast reactive client<br>
+            <strong>Tailwind CSS:</strong> Modern design tokens<br>
+            <strong>Lucide Icons:</strong> Sleek UI icons<br>
+            <strong>HTML5 Canvas:</strong> Dynamic QR engine
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+            <div class="card-header-icon" style="background: #eef2ff; color: #4f46e5; width: 32px; height: 32px; font-size: 16px; margin: 0;">⚡</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #4f46e5;">Backend & APIs</h4>
+          </div>
+          <div style="font-size: 11.5px; line-height: 1.8; color: #334155;">
+            <strong>Node.js & Express:</strong> High async I/O<br>
+            <strong>RESTful Microservices:</strong> Scalable endpoints<br>
+            <strong>JWT & RBAC:</strong> Secure role-based auth<br>
+            <strong>HMAC-SHA256:</strong> Cryptographic tickets
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+            <div class="card-header-icon" style="background: #d1fae5; color: #059669; width: 32px; height: 32px; font-size: 16px; margin: 0;">🗄️</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #059669;">Data & Cache</h4>
+          </div>
+          <div style="font-size: 11.5px; line-height: 1.8; color: #334155;">
+            <strong>PostgreSQL 15:</strong> ACID transactions<br>
+            <strong>Redis 7 In-Memory:</strong> Mutex seat locks<br>
+            <strong>Prisma ORM:</strong> Type-safe queries<br>
+            <strong>S3 Object Store:</strong> PDF passes & media
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+            <div class="card-header-icon" style="background: #ede9fe; color: #7c3aed; width: 32px; height: 32px; font-size: 16px; margin: 0;">☁️</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: #7c3aed;">DevOps & Cloud</h4>
+          </div>
+          <div style="font-size: 11.5px; line-height: 1.8; color: #334155;">
+            <strong>Vercel Platform:</strong> Edge CDN deployment<br>
+            <strong>Docker Containers:</strong> Portable architecture<br>
+            <strong>GitHub Actions:</strong> Automated CI/CD<br>
+            <strong>Cloudflare:</strong> SSL/TLS 1.3 & DDoS shield
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 10: USER WORKFLOW
+         ========================================== -->
+    <div class="slide" id="slide-10">
+      <div class="slide-tag">08 — End-to-End Flow</div>
+      <h2 class="slide-title">User Workflow</h2>
+      <p class="slide-subtitle">Frictionless journey from search to verified turnstile gate entry in 6 steps</p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="pipeline-num" style="background: #4f46e5;">1</div>
+          <div class="pipeline-icon">🔍</div>
+          <div class="pipeline-title">Search</div>
+          <div class="pipeline-desc">Find events, trips or venues in one place with filters.</div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num" style="background: #0284c7;">2</div>
+          <div class="pipeline-icon">🎯</div>
+          <div class="pipeline-title">Select</div>
+          <div class="pipeline-desc">Pick date, category and seat with live interactive map.</div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num" style="background: #7c3aed;">3</div>
+          <div class="pipeline-icon">🔒</div>
+          <div class="pipeline-title">Lock Seat</div>
+          <div class="pipeline-desc">Atomic Redis lock holds seat for 7 mins while you pay.</div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num" style="background: #059669;">4</div>
+          <div class="pipeline-icon">💳</div>
+          <div class="pipeline-title">Pay</div>
+          <div class="pipeline-desc">Encrypted checkout by UPI, card, or digital wallet.</div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num" style="background: #d97706;">5</div>
+          <div class="pipeline-icon">📲</div>
+          <div class="pipeline-title">E-Ticket</div>
+          <div class="pipeline-desc">Signed, tamper-proof QR lands in wallet instantly.</div>
+        </div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-num" style="background: #e11d48;">6</div>
+          <div class="pipeline-icon">🎟️</div>
+          <div class="pipeline-title">Scan & Enter</div>
+          <div class="pipeline-desc">Turnstile gate scan validates QR in &lt; 0.2s offline.</div>
+        </div>
+      </div>
+
+      <div class="banner-strip light-blue">
+        <div style="font-size: 12.5px; font-weight: 700;">
+          🔄 Lifecycle Continuity: After entry, ticket transfer, verified secondary resale and automated refunds stay in the same app.
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 11: MARKET OPPORTUNITY
+         ========================================== -->
+    <div class="slide" id="slide-11">
+      <div class="slide-tag">09 — Business Potential</div>
+      <h2 class="slide-title">Market Opportunity</h2>
+      <p class="slide-subtitle">Capturing explosive secular growth across global digital ticketing</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1.35fr; gap: 24px; margin-bottom: 20px;">
+        <div class="card" style="background: #1e1b4b; color: #fff; border: 1.5px solid #6366f1; justify-content: center; padding: 32px;">
+          <div style="font-size: 12px; font-weight: 700; color: #a5b4fc; text-transform: uppercase; margin-bottom: 8px;">GLOBAL MARKET SIZE</div>
+          <div style="font-size: 44px; font-weight: 800; font-family: 'Space Grotesk'; line-height: 1.1; margin-bottom: 12px;">USD 107.7B</div>
+          <div style="font-size: 13px; color: #c7d2fe; line-height: 1.5;">
+            Projected size of the global digital ticketing market by 2034.<br>
+            CAGR: ~6.2% annual growth.<br>
+            <span style="opacity: 0.8; font-size: 11px;">Source: Market.us, industry reports · 2026</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="card" style="padding: 14px 18px; flex-direction: row; gap: 16px; align-items: center;">
+            <div class="card-header-icon" style="background: #f5f3ff; color: #7c3aed; margin: 0; min-width: 44px;">📅</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark);">Events & Entertainment</h4>
+              <p style="font-size: 11.5px; color: #475569;">Concerts, sports matches, comedy gigs & music festivals with massive peak-demand flash sales.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 14px 18px; flex-direction: row; gap: 16px; align-items: center;">
+            <div class="card-header-icon" style="background: #e0f2fe; color: #0284c7; margin: 0; min-width: 44px;">✈️</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark);">Travel & Transit</h4>
+              <p style="font-size: 11.5px; color: #475569;">Intercity buses, high-speed rail, regional transit & domestic flights requiring real-time seat sync.</p>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 14px 18px; flex-direction: row; gap: 16px; align-items: center;">
+            <div class="card-header-icon" style="background: #ecfdf5; color: #059669; margin: 0; min-width: 44px;">📍</div>
+            <div>
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--text-dark);">Venues & Attractions</h4>
+              <p style="font-size: 11.5px; color: #475569;">Museums, theme parks, heritage monuments & stadiums rapidly migrating to 100% contactless QR gates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner-strip" style="background: #f1f5f9; color: #1e293b;">
+        <div style="font-size: 12px; font-weight: 700;">
+          🚀 Core Growth Drivers: Mobile-first consumer adoption &nbsp;•&nbsp; Contactless turnstiles &nbsp;•&nbsp; Counterfeit-proof dynamic QR ticketing
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 12: CONCLUSION & NEXT STEPS
+         ========================================== -->
+    <div class="slide" id="slide-12">
+      <div class="slide-tag">10 — Summary & Next Steps</div>
+      <h2 class="slide-title">Conclusion & Roadmap</h2>
+      <p class="slide-subtitle">Summary, key takeaways and project execution roadmap</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="card" style="padding: 12px 16px; flex-direction: row; gap: 14px; align-items: center;">
+            <div style="width: 28px; height: 28px; background: #dc2626; color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">1</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: var(--text-dark);">The Problem</div>
+              <div style="font-size: 11px; color: #475569;">Fragmented channels, inventory gaps, and counterfeit fraud hurt users and operators.</div>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 12px 16px; flex-direction: row; gap: 14px; align-items: center;">
+            <div style="width: 28px; height: 28px; background: #4f46e5; color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">2</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Our Solution</div>
+              <div style="font-size: 11px; color: #475569;">One platform with live Redis atomic locks, encrypted QR dynamic tickets, and unified refunds.</div>
+            </div>
+          </div>
+
+          <div class="card" style="padding: 12px 16px; flex-direction: row; gap: 14px; align-items: center;">
+            <div style="width: 28px; height: 28px; background: #059669; color: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">3</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Why It Wins</div>
+              <div style="font-size: 11px; color: #475569;">Built for scale, zero double-bookings, aimed at a USD 107.7B market.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background: #eef2ff; border: 1.5px solid #6366f1; padding: 18px;">
+          <h4 style="font-size: 14px; font-weight: 700; color: var(--primary-indigo); margin-bottom: 12px;">🚀 Execution Roadmap & Next Steps</h4>
+          <ul style="font-size: 11px; line-height: 1.6; color: #1e293b; padding-left: 18px;">
+            <li><strong>Phase 1 (MVP Build):</strong> Complete React 18 UI, Node microservices, and Redis distributed seat mutex locks.</li>
+            <li><strong>Phase 2 (Pilot Trials):</strong> Deploy beta test with one regional entertainment venue and one transit fleet.</li>
+            <li><strong>Phase 3 (Turnstiles & Scale):</strong> Production UPI integration, gate turnstile scanner hardware SDK, and general launch.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hero-bottom-bar" style="margin-top: auto; padding: 14px 24px;">
+        <div style="font-size: 20px; font-weight: 800; color: #ffffff;">Thank You!</div>
+        <div style="grid-column: span 3; text-align: right;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--neon-cyan);">
+            K Hemanth Reddy (2500030420) &nbsp;·&nbsp; M Jayasimha Naidu (2500031628) &nbsp;·&nbsp; G Sai Chaitanya (2500031734)
+          </div>
+          <div style="font-size: 11.5px; color: #c7d2fe; opacity: 0.9;">Under the Guidance of K Lalitha Vani Sri Madam</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 12;
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide').forEach((s, idx) => {
+        s.classList.toggle('active', (idx + 1) === currentSlide);
+      });
+
+      const formatted = String(currentSlide).padStart(2, '0') + ' / ' + String(totalSlides).padStart(2, '0');
+      document.getElementById('counter').innerText = formatted;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard Arrow Controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'Home') {
+        showSlide(1);
+      } else if (e.key === 'End') {
+        showSlide(totalSlides);
+      }
+    });
+  </script>
+</body>
+</html>
