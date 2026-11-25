@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTravel } from '../context/TravelContext';
 
-export default function Navbar() {
+export default function Navbar({ onSwitchToPortal }) {
   const { currentUser, currentAccount, openModal, logoutUser } = useTravel();
 
   const displayName = currentAccount?.name || (currentUser ? currentUser.split('@')[0] : '');
@@ -10,6 +10,13 @@ export default function Navbar() {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleLogout = () => {
+    logoutUser();
+    if (onSwitchToPortal) {
+      onSwitchToPortal();
     }
   };
 
@@ -78,7 +85,8 @@ export default function Navbar() {
                 <button
                   type="button"
                   className="btn btn-danger"
-                  onClick={logoutUser}
+                  onClick={handleLogout}
+                  title="Logout and return to Login Portal"
                 >
                   <i className="fa-solid fa-right-from-bracket me-1"></i>
                   Logout
@@ -88,17 +96,11 @@ export default function Navbar() {
               <>
                 <button
                   type="button"
-                  className="btn btn-login"
-                  onClick={() => openModal('login')}
+                  className="btn btn-outline-primary"
+                  onClick={onSwitchToPortal || (() => openModal('login'))}
                 >
-                  Login
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary-grad"
-                  onClick={() => openModal('register')}
-                >
-                  Register
+                  <i className="fa-solid fa-arrow-left me-1"></i>
+                  Login Portal
                 </button>
               </>
             )}

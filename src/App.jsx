@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTravel } from './context/TravelContext';
+import AuthPortal from './components/AuthPortal';
 import Navbar from './components/Navbar';
 import HeroSearch from './components/HeroSearch';
 import TravelAlerts from './components/TravelAlerts';
@@ -27,7 +28,20 @@ import ConfirmationModal from './components/modals/ConfirmationModal';
 import DetailsModal from './components/modals/DetailsModal';
 
 export default function App() {
-  const { isMaintenanceMode } = useTravel();
+  const { currentUser, isAdminLoggedIn, logoutAdmin, openModal, isMaintenanceMode } = useTravel();
+  const [isGuest, setIsGuest] = useState(false);
+
+  // If user is neither logged in, nor admin, nor in guest mode: SHOW LOGIN/ADMIN PORTAL FIRST!
+  const isAuthenticated = Boolean(currentUser || isAdminLoggedIn || isGuest);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="travel-app">
+        <AuthPortal onContinueAsGuest={() => setIsGuest(true)} />
+        <ToastContainer />
+      </div>
+    );
+  }
 
   return (
     <div className="travel-app">
@@ -43,10 +57,41 @@ export default function App() {
         </div>
       )}
 
-      {/* NAVBAR */}
-      <Navbar />
+      {/* ADMIN STATUS BANNER IF LOGGED IN AS ADMIN */}
+      {isAdminLoggedIn && (
+        <div
+          className="bg-dark text-white py-2 px-3 fixed-top d-flex justify-content-between align-items-center"
+          style={{ zIndex: 1070 }}
+        >
+          <div className="small">
+            <span className="badge bg-danger me-2">ADMIN SESSION</span>
+            <span>Signed in as <strong>admin@travelease.com</strong></span>
+          </div>
+          <div className="d-flex gap-2">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm py-0"
+              onClick={() => openModal('adminDashboard')}
+            >
+              <i className="fa-solid fa-gauge-high me-1"></i> Open Admin Dashboard
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-light btn-sm py-0"
+              onClick={logoutAdmin}
+            >
+              <i className="fa-solid fa-right-from-bracket me-1"></i> Logout Admin
+            </button>
+          </div>
+        </div>
+      )}
 
-      {/* MAIN CONTENT */}
+      {/* NAVBAR */}
+      <div style={{ marginTop: isAdminLoggedIn ? '40px' : '0' }}>
+        <Navbar onSwitchToPortal={() => setIsGuest(false)} />
+      </div>
+
+      {/* MAIN CONTENT (SHOWN ONLY AFTER LOGIN) */}
       <main>
         <HeroSearch />
         <TravelAlerts />

@@ -1054,6 +1054,55 @@ footer a:hover {
   to { transform: translateX(0); opacity: 1; }
 }
 
+/* AUTH PORTAL GATEWAY */
+.auth-portal-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0b1f3a 0%, #153966 50%, #1c5294 100%);
+  padding: 40px 15px;
+}
+
+.portal-card {
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+  background: #ffffff;
+}
+
+.portal-header {
+  background: #f8fbff;
+}
+
+.portal-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--primary), #3d8bff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.6rem;
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+}
+
+.portal-tab-btn {
+  background: #f8fbff;
+  border: none;
+  font-weight: 700;
+  color: var(--gray);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.portal-tab-btn.active {
+  background: #ffffff;
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
+}
+
+
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2rem;
